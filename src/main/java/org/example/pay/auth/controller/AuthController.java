@@ -34,7 +34,7 @@ public class AuthController {
             @ApiResponse(responseCode = "204", description = "이메일 인증 성공입니다."),
     })
     @PostMapping("/email/verification-code/verify")
-    public ResponseEntity<Object> sendVerificationCode(@RequestBody final EmailVerificationCodeVerifyRequest emailVerificationCodeVerifyRequest) {
+    public ResponseEntity<Object> verifyVerificationCode(@RequestBody final EmailVerificationCodeVerifyRequest emailVerificationCodeVerifyRequest) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
@@ -52,7 +52,7 @@ public class AuthController {
             @ApiResponse(responseCode = "204", description = "로그인 성공입니다."),
     })
     @PostMapping("/login")
-    public ResponseEntity<Object> register(@RequestBody final LoginRequest loginRequest) {
+    public ResponseEntity<Object> login(@RequestBody final LoginRequest loginRequest) {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }
