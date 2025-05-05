@@ -41,7 +41,7 @@
 ## 💻 1주차 결과물
 
 ### API 명세서
-![API 명세서](https://velog.velcdn.com/images/rlaehddbs4521/post/d41367fc-4635-4273-9746-848667b69038/image.png)
+![API 명세서](https://velog.velcdn.com/images/rlaehddbs4521/post/0b0bb6b3-7907-42af-9736-9f572bf82211/image.png)
 
 ### ERD
 ![ERD](https://velog.velcdn.com/images/rlaehddbs4521/post/7374d6b0-2bbe-4dd8-94cf-26cb551c5624/image.png)
