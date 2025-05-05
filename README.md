@@ -37,3 +37,11 @@
 | 5주차 |  |
 
 ---
+
+## 💻 1주차 결과물
+### API 명세서
+<img src="https://github.com/user-attachments/assets/3c1ef824-6171-429e-af78-bc2f6d7cf62d" height="500"/>
+
+
+### ERD
+<img height="500" src="https://github.com/user-attachments/assets/81c3b0fb-4319-4f25-8ad2-eee1ca9fe886" />
