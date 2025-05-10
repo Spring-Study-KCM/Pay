@@ -24,6 +24,8 @@ public class EmailService {
     private final RedisTemplate<String, String> redisTemplate;
 
     private static final long VERIFICATION_CODE_TTL = 10;
+    private static final String VERIFICATION_CODE_KEY = "verification:code:";
+    private static final String VERIFICATION_CODE_STATUS = "verification:status:";
 
     public String sendEmailVerificationCode(final String email) {
         if (!StringUtils.hasText(email)) {
@@ -38,8 +40,13 @@ public class EmailService {
             throw new PayException(MailErrorCode.EMAIL_SENDING_ERROR);
         }
 
-        redisTemplate.opsForValue().set(email, verificationCode);
-        redisTemplate.expire(email, VERIFICATION_CODE_TTL, TimeUnit.MINUTES);
+        String codeKey = VERIFICATION_CODE_KEY + email;
+        redisTemplate.opsForValue().set(codeKey, verificationCode);
+        redisTemplate.expire(codeKey, VERIFICATION_CODE_TTL, TimeUnit.MINUTES);
+
+        String verifiedKey = VERIFICATION_CODE_STATUS + email;
+        redisTemplate.opsForValue().set(verifiedKey, "false");
+        redisTemplate.expire(verifiedKey, VERIFICATION_CODE_TTL, TimeUnit.MINUTES);
 
         return verificationCode;
     }
@@ -49,13 +56,18 @@ public class EmailService {
             return false;
         }
 
-        String storedCode = redisTemplate.opsForValue().get(email);
+        String codeKey = VERIFICATION_CODE_KEY + email;
+        String verifiedKey = VERIFICATION_CODE_STATUS + email;
+
+        String storedCode = redisTemplate.opsForValue().get(codeKey);
 
         if (storedCode == null || !storedCode.equals(code)) {
             return false;
         }
 
-        redisTemplate.delete(email);
+        redisTemplate.opsForValue().set(verifiedKey, "true");
+        redisTemplate.expire(verifiedKey, VERIFICATION_CODE_TTL, TimeUnit.MINUTES);
+
         return true;
     }
 
