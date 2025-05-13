@@ -5,10 +5,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.example.pay.auth.dto.request.EmailVerificationCodeVerifyRequest;
-import org.example.pay.auth.dto.request.LoginRequest;
-import org.example.pay.auth.dto.request.RegisterRequest;
 import org.example.pay.auth.dto.request.EmailVerificationCodeSendRequest;
+import org.example.pay.auth.dto.request.EmailVerificationCodeVerifyRequest;
+import org.example.pay.auth.dto.request.RegisterRequest;
+import org.example.pay.auth.service.AuthService;
 import org.example.pay.external.email.service.EmailService;
 import org.example.pay.global.dto.ResponseDto;
 import org.springframework.http.HttpStatus;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final EmailService emailService;
+    private final AuthService authService;
 
     @Operation(summary = "페이 이메일 전송 API")
     @ApiResponses(value = {
@@ -59,15 +60,8 @@ public class AuthController {
     })
     @PostMapping("/register")
     public ResponseEntity<Object> register(@RequestBody final RegisterRequest registerRequest) {
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-    }
 
-    @Operation(summary = "페이 로그인 API")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "로그인 성공입니다."),
-    })
-    @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody final LoginRequest loginRequest) {
+        authService.register(registerRequest.email(), registerRequest.password());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }
