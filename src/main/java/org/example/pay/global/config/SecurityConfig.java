@@ -1,7 +1,7 @@
 package org.example.pay.global.config;
 
 import lombok.RequiredArgsConstructor;
-import org.example.pay.global.filter.JsonAuthenticationFilter;
+import org.example.pay.global.filter.AuthenticationFilter;
 import org.example.pay.global.handler.AuthenticationFailureHandler;
 import org.example.pay.global.handler.AuthenticationSuccessHandler;
 import org.example.pay.global.handler.LogoutSuccessHandler;
@@ -51,8 +51,8 @@ public class SecurityConfig {
     }
 
     @Bean
-    public JsonAuthenticationFilter jsonAuthenticationFilter(AuthenticationConfiguration authConfig) throws Exception {
-        JsonAuthenticationFilter filter = new JsonAuthenticationFilter();
+    public AuthenticationFilter jsonAuthenticationFilter(AuthenticationConfiguration authConfig) throws Exception {
+        AuthenticationFilter filter = new AuthenticationFilter();
         filter.setAuthenticationManager(authenticationManager(authConfig));
         filter.setAuthenticationSuccessHandler(successHandler);
         filter.setAuthenticationFailureHandler(failureHandler);
