@@ -5,10 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.AuthRequest;
 import org.example.dto.UserDto;
 import org.example.entity.User;
+import org.example.entity.UserResponseDto;
 import org.example.security.JwtProvider;
 import org.example.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +24,7 @@ import java.util.Collections;
 public class UserController {
     private final UserService userService;
     private final JwtProvider jwtProvider;
+    private final AuthenticationManager authenticationManager;
 
     @PostMapping
     public ResponseEntity<?> register(@RequestBody @Valid UserDto userDto) {
@@ -30,11 +34,13 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
-        User user = userService.getUserByEmail(request.getEmail());
-        if (!new BCryptPasswordEncoder().matches(request.getPassword(), user.getPassword())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("비밀번호 불일치");
-        }
-        String token = jwtProvider.generateToken(user.getEmail());
+        // AuthenticationManager로 인증 수행
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
+        );
+
+        // 인증 성공 -> 토큰 발급
+        String token = jwtProvider.generateToken(request.getEmail());
         return ResponseEntity.ok(Collections.singletonMap("token", token));
     }
 
@@ -42,6 +48,8 @@ public class UserController {
     public ResponseEntity<?> getMyInfo(Authentication authentication) {
         String email = authentication.getName();
         User user = userService.getUserByEmail(email);
-        return ResponseEntity.ok(user);
+
+        UserResponseDto responseDto = new UserResponseDto(user.getId(), user.getEmail());
+        return ResponseEntity.ok(responseDto);
     }
 }
