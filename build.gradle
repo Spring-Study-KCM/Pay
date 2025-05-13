@@ -54,6 +54,9 @@ dependencies {
     // ThymeLeaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+    // Session
+    implementation 'org.springframework.session:spring-session-data-redis'
 }
 
 tasks.named('test') {
