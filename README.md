@@ -45,3 +45,19 @@
 
 ### ERD
 ![ERD](https://velog.velcdn.com/images/rlaehddbs4521/post/7374d6b0-2bbe-4dd8-94cf-26cb551c5624/image.png)
+
+---
+
+## 💻 2주차 결과물
+
+### ERD
+![ERD](https://velog.velcdn.com/images/rlaehddbs4521/post/84f8a62c-5ac3-4cd0-8a6a-b159866075b7/image.png)
+
+
+- 1주차 결과물 피드백을 통해 ERD 수정
+- Spring Security를 적용하여 인증/인가
+- Java Mail Sender를 이용해서 이메일 인증 코드 전송
+- Session 기반으로 인증/인가 진행
+- Redis를 통해 이메일 인증 번호, Session Id 저장
+- 로그인, 로그아웃, 인증 핸들러 등록
+- 인증 인가 필터 등록
