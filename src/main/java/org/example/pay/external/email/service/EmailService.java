@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.example.pay.global.RandomGenerator;
 import org.example.pay.global.exception.PayException;
+import org.example.pay.global.exception.code.AuthErrorCode;
 import org.example.pay.global.exception.code.MailErrorCode;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -51,24 +52,21 @@ public class EmailService {
         return verificationCode;
     }
 
-    public boolean verifyEmailCode(final String email, final String code) {
+    public void verifyEmailCode(final String email, final String code) {
         if (!StringUtils.hasText(email) || !StringUtils.hasText(code)) {
-            return false;
+            throw new PayException(AuthErrorCode.VERIFICATION_INFO_NULL);
         }
 
         String codeKey = VERIFICATION_CODE_KEY + email;
         String verifiedKey = VERIFICATION_CODE_STATUS + email;
 
         String storedCode = redisTemplate.opsForValue().get(codeKey);
-
         if (storedCode == null || !storedCode.equals(code)) {
-            return false;
+            throw new PayException(AuthErrorCode.VERIFICATION_CODE_WRONG);
         }
 
         redisTemplate.opsForValue().set(verifiedKey, "true");
         redisTemplate.expire(verifiedKey, VERIFICATION_CODE_TTL, TimeUnit.MINUTES);
-
-        return true;
     }
 
     private void sendToEmail(String to, String verificationCode) throws MessagingException {
