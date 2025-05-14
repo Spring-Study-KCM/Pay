@@ -40,8 +40,8 @@
 
 ## 💻 1주차 결과물
 ### API 명세서
-<img src="https://github.com/user-attachments/assets/3c1ef824-6171-429e-af78-bc2f6d7cf62d" height="500"/>
+<img height="500" alt="api" src="https://github.com/user-attachments/assets/cc81546c-398e-4a78-abc2-8bd49e9e544c" />
 
 
 ### ERD
-<img height="500" src="https://github.com/user-attachments/assets/81c3b0fb-4319-4f25-8ad2-eee1ca9fe886" />
+<img height="500" alt="erd" src="https://github.com/user-attachments/assets/22e08596-706e-4b2f-a89e-a47bb2d4626e" />
