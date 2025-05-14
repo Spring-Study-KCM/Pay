@@ -16,6 +16,18 @@ spring:
       hibernate:
         format_sql: true
 
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MY_GMAIL}
+    password: ${SPRING_BOOT_APP_PASSWORD}  # 위에서 복사한 앱 비밀번호
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 logging:
   level:
     org.hibernate.SQL: DEBUG
