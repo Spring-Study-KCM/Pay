@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/users/login", "/users/register", // 로그인/회원가입 허용
+                                "/users/login", "/users", "/users/send-verification", // 로그인/회원가입, 이메일인증 허용
                                 "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html" // Swagger 경로 허용
                         ).permitAll()
                         .anyRequest().authenticated()

@@ -7,6 +7,7 @@ import org.example.dto.UserDto;
 import org.example.entity.User;
 import org.example.entity.UserResponseDto;
 import org.example.security.JwtProvider;
+import org.example.service.MailService;
 import org.example.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ public class UserController {
     private final UserService userService;
     private final JwtProvider jwtProvider;
     private final AuthenticationManager authenticationManager;
+    private final MailService mailService;
 
     @PostMapping
     public ResponseEntity<?> register(@RequestBody @Valid UserDto userDto) {
@@ -42,6 +44,12 @@ public class UserController {
         // 인증 성공 -> 토큰 발급
         String token = jwtProvider.generateToken(request.getEmail());
         return ResponseEntity.ok(Collections.singletonMap("token", token));
+    }
+
+    @PostMapping("/send-verification")
+    public ResponseEntity<?> sendVerificationEmail(@RequestParam String email) {
+        mailService.sendVerificationMail(email);
+        return ResponseEntity.ok("인증 메일이 전송되었습니다.");
     }
 
     @GetMapping
