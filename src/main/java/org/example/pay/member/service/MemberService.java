@@ -29,6 +29,7 @@ public class MemberService {
 		Member member = Member.builder()
 			.email(joinDto.email())
 			.password(bCryptPasswordEncoder.encode(joinDto.password()))
+			.name(joinDto.name())
 			.role(Role.USER)
 			.build();
 		memberRepository.save(member);
