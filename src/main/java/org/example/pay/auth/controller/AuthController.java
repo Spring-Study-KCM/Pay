@@ -59,7 +59,7 @@ public class AuthController {
             @ApiResponse(responseCode = "204", description = "회원가입 성공입니다."),
     })
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody final RegisterRequest registerRequest) {
+    public ResponseEntity<ResponseDto<Void>> register(@RequestBody final RegisterRequest registerRequest) {
 
         authService.register(registerRequest.email(), registerRequest.password());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
