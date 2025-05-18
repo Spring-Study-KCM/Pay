@@ -3,6 +3,7 @@ package org.example.pay.auth.service;
 import lombok.RequiredArgsConstructor;
 import org.example.pay.global.exception.PayException;
 import org.example.pay.global.exception.code.AuthErrorCode;
+import org.example.pay.pay_account.service.PayAccountService;
 import org.example.pay.user.domain.User;
 import org.example.pay.user.repository.UserRepository;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AuthService {
 
+    private final PayAccountService payAccountService;
     private final UserRepository userRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final PasswordEncoder passwordEncoder;
@@ -44,5 +46,7 @@ public class AuthService {
         userRepository.save(user);
 
         redisTemplate.delete(VERIFICATION_CODE_STATUS + email);
+
+        payAccountService.createPayAccount(user);
     }
 }
