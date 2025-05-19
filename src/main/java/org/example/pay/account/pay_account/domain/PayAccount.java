@@ -1,4 +1,4 @@
-package org.example.pay.pay_account.domain;
+package org.example.pay.account.pay_account.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,5 +36,9 @@ public class PayAccount {
     @Builder
     public PayAccount(User user) {
         this.user = user;
+    }
+
+    public void deposit(Long amount) {
+        this.balance += amount;
     }
 }

@@ -1,4 +1,4 @@
-package org.example.pay.bank_account.domain;
+package org.example.pay.account.bank_account.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,8 +15,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.example.pay.bank_account.dto.request.BankType;
-import org.example.pay.pay_account.domain.PayAccount;
+import org.example.pay.account.bank_account.dto.request.BankType;
+import org.example.pay.account.pay_account.domain.PayAccount;
 import org.example.pay.user.domain.User;
 
 @Getter
@@ -54,5 +54,9 @@ public class BankAccount {
         this.bankType = bankType;
         this.payAccount = payAccount;
         this.user = user;
+    }
+
+    public void withdraw(Long amount) {
+        this.balance -= amount;
     }
 }
