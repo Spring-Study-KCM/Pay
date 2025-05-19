@@ -35,8 +35,13 @@ public class BankAccountController {
             @ApiResponse(responseCode = "200", description = "계좌 연결 성공입니다."),
     })
     @PostMapping("/connect")
-    public ResponseEntity<Object> connectBankAccount(@RequestBody final BackAccountRequest backAccountRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+    public ResponseEntity<ResponseDto<Void>> connectBankAccount(@AuthenticationPrincipal CustomUserDetails customUserDetails,
+                                                     @RequestBody final BackAccountRequest backAccountRequest) {
+
+        bankAccountService.connectBankAccount(customUserDetails.getId(), backAccountRequest.bankName(),
+                backAccountRequest.bankAccount());
+
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.success());
     }
 
     @Operation(summary = "페이 연결된 금융 계좌 목록 조회 API")

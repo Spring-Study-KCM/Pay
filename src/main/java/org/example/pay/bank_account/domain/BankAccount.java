@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.pay.bank_account.dto.request.BankType;
@@ -46,4 +47,12 @@ public class BankAccount {
 
     @Column(name = "balance")
     private Long balance = 100000L;
+
+    @Builder
+    public BankAccount(String accountNumber, BankType bankType, PayAccount payAccount, User user) {
+        this.accountNumber = accountNumber;
+        this.bankType = bankType;
+        this.payAccount = payAccount;
+        this.user = user;
+    }
 }
