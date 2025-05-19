@@ -22,9 +22,9 @@ public class AuthController {
 
 	private final AuthService authService;
 
-	@PostMapping("/signup")
 	@Operation(summary = "회원가입 API",
 		description = "회원가입")
+	@PostMapping("/signup")
 	public void join(@RequestBody JoinRequestDto joinRequestDto) {
 		authService.join(joinRequestDto);
 	}
