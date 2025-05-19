@@ -3,6 +3,7 @@ package org.example.pay.auth.controller;
 import org.example.pay.auth.dto.request.LoginRequestDto;
 import org.example.pay.auth.service.AuthService;
 import org.example.pay.auth.dto.request.JoinRequestDto;
+import org.example.pay.auth.service.DevService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
 	private final AuthService authService;
+	private final DevService devService;
 
 	@Operation(summary = "회원가입 API",
 		description = "회원가입")
@@ -36,7 +38,7 @@ public class AuthController {
 			""")
 	@PostMapping("/temp-login")
 	public ResponseEntity<String> tempLogin(@RequestBody LoginRequestDto tempLoginDto, HttpServletRequest request) {
-		String session = authService.tempLogin(tempLoginDto, request);
+		String session = devService.tempLogin(tempLoginDto, request);
 		return ResponseEntity.ok(session);
 	}
 }
