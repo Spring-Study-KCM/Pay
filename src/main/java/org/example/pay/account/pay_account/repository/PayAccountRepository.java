@@ -1,7 +1,7 @@
-package org.example.pay.pay_account.repository;
+package org.example.pay.account.pay_account.repository;
 
 import java.util.Optional;
-import org.example.pay.pay_account.domain.PayAccount;
+import org.example.pay.account.pay_account.domain.PayAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PayAccountRepository extends JpaRepository<PayAccount, Long> {
