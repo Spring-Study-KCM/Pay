@@ -1,4 +1,4 @@
-package org.example.pay.bank_account.dto.request;
+package org.example.pay.account.bank_account.dto.request;
 
 import java.util.Arrays;
 import lombok.AllArgsConstructor;

@@ -3,7 +3,7 @@ package org.example.pay.auth.service;
 import lombok.RequiredArgsConstructor;
 import org.example.pay.global.exception.PayException;
 import org.example.pay.global.exception.code.AuthErrorCode;
-import org.example.pay.pay_account.service.PayAccountService;
+import org.example.pay.account.pay_account.service.PayAccountService;
 import org.example.pay.user.domain.User;
 import org.example.pay.user.repository.UserRepository;
 import org.springframework.data.redis.core.RedisTemplate;
