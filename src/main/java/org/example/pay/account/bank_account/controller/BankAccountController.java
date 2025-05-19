@@ -1,4 +1,4 @@
-package org.example.pay.bank_account.controller;
+package org.example.pay.account.bank_account.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -6,10 +6,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.example.pay.bank_account.dto.request.BackAccountRequest;
-import org.example.pay.bank_account.dto.request.DisconnectAccountRequest;
-import org.example.pay.bank_account.dto.response.BankAccountInfoResponse;
-import org.example.pay.bank_account.service.BankAccountService;
+import org.example.pay.account.bank_account.dto.request.BackAccountRequest;
+import org.example.pay.account.bank_account.dto.request.DisconnectAccountRequest;
+import org.example.pay.account.bank_account.dto.response.BankAccountInfoResponse;
+import org.example.pay.account.service.AccountService;
 import org.example.pay.global.dto.ResponseDto;
 import org.example.pay.global.service.CustomUserDetails;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/account/bank")
 public class BankAccountController {
 
-    private final BankAccountService bankAccountService;
+    private final AccountService accountService;
 
     @Operation(summary = "페이 계좌 연결 API")
     @ApiResponses(value = {
@@ -36,9 +36,9 @@ public class BankAccountController {
     })
     @PostMapping("/connect")
     public ResponseEntity<ResponseDto<Void>> connectBankAccount(@AuthenticationPrincipal CustomUserDetails customUserDetails,
-                                                     @RequestBody final BackAccountRequest backAccountRequest) {
+                                                                @RequestBody final BackAccountRequest backAccountRequest) {
 
-        bankAccountService.connectBankAccount(customUserDetails.getId(), backAccountRequest.bankName(),
+        accountService.connectBankAccount(customUserDetails.getId(), backAccountRequest.bankName(),
                 backAccountRequest.bankAccountNumber());
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.success());
@@ -52,7 +52,7 @@ public class BankAccountController {
     public ResponseEntity<ResponseDto<List<BankAccountInfoResponse>>> connectedBankAccount(
             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
 
-        List<BankAccountInfoResponse> connectedBankAccount = bankAccountService.getConnectedBankAccount(
+        List<BankAccountInfoResponse> connectedBankAccount = accountService.getConnectedBankAccount(
                 customUserDetails.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.success(connectedBankAccount));
@@ -65,7 +65,7 @@ public class BankAccountController {
     @DeleteMapping("/connect")
     public ResponseEntity<ResponseDto<Void>> disconnectAccount(@RequestBody final DisconnectAccountRequest disconnectAccountRequest) {
 
-        bankAccountService.disConnectBankAccount(disconnectAccountRequest.bankId());
+        accountService.disconnectBankAccount(disconnectAccountRequest.bankId());
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ResponseDto.success());
     }
