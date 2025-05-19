@@ -55,6 +55,15 @@ public class BankAccountService {
         bankAccountRepository.save(bankAccount);
     }
 
+    @Transactional
+    public void disConnectBankAccount(Long bankId) {
+
+        BankAccount bankAccount = bankAccountRepository.findById(bankId)
+                .orElseThrow(() -> new PayException(BankAccountErrorCode.NOT_FOUND_BANK_NAME));
+
+        bankAccountRepository.delete(bankAccount);
+    }
+
     private BankType validateBankName(String bankName) {
         return BankType.getBankType(bankName);
     }
