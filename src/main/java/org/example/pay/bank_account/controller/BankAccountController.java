@@ -63,7 +63,10 @@ public class BankAccountController {
             @ApiResponse(responseCode = "204", description = "페이와 연결된 계좌를 삭제했습니다."),
     })
     @DeleteMapping("/connect")
-    public ResponseEntity<Object> disconnectAccount(@RequestBody final DisconnectAccountRequest disconnectAccountRequest) {
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    public ResponseEntity<ResponseDto<Void>> disconnectAccount(@RequestBody final DisconnectAccountRequest disconnectAccountRequest) {
+
+        bankAccountService.disConnectBankAccount(disconnectAccountRequest.bankId());
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ResponseDto.success());
     }
 }
