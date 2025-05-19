@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthService {
 
-	private final AuthService self;
 	private final MemberRepository memberRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final SecurityContextService securityContextService;
@@ -46,7 +45,7 @@ public class AuthService {
 		Member member = memberRepository.findByEmail(tempLoginDto.email())
 			.orElseGet(() -> {
 				JoinRequestDto joinRequestDto = new JoinRequestDto(tempLoginDto.email(), "임시유저", tempLoginDto.password());
-				return self.join(joinRequestDto);
+				return join(joinRequestDto);
 			});
 
 		if (!bCryptPasswordEncoder.matches(tempLoginDto.password(), member.getPassword())) {
