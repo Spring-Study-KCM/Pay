@@ -60,6 +60,10 @@ dependencies {
 
     // Spring Boot Mai
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // 세션
+    implementation 'org.springframework.session:spring-session-data-redis'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {
