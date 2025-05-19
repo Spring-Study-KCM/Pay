@@ -39,7 +39,7 @@ public class BankAccountController {
                                                      @RequestBody final BackAccountRequest backAccountRequest) {
 
         bankAccountService.connectBankAccount(customUserDetails.getId(), backAccountRequest.bankName(),
-                backAccountRequest.bankAccount());
+                backAccountRequest.bankAccountNumber());
 
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.success());
     }
