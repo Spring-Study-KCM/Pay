@@ -12,7 +12,7 @@ public enum BankType {
 
     KAKAO_BANK("카카오뱅크"),
     KOOKMIN_BANK("국민은행"),
-    SHINHAN("신한은행");
+    SHINHAN_BANK("신한은행");
 
     private final String name;
 
