@@ -30,6 +30,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		Authentication authentication) throws IOException, ServletException {
 		SecurityContext context = SecurityContextHolder.getContext();
 		context.setAuthentication(authentication);
+		SecurityContextHolder.setContext(context);
 
 		HttpSession session = request.getSession(true);
 		session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
@@ -43,5 +44,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 		response.setCharacterEncoding("UTF-8");
 
 		response.getWriter().write(objectMapper.writeValueAsString(data));
+		response.getWriter().flush();
+		response.getWriter().close();
 	}
 }
