@@ -6,7 +6,6 @@ import org.example.pay.account.domain.Account;
 import org.example.pay.account.dto.request.AddAccountRequestDto;
 import org.example.pay.account.dto.response.AccountResponseDto;
 import org.example.pay.account.repository.AccountRepository;
-import org.example.pay.auth.domain.CustomUserDetails;
 import org.example.pay.member.domain.Member;
 import org.example.pay.member.service.MemberService;
 import org.springframework.stereotype.Service;
@@ -22,16 +21,16 @@ public class AccountService {
 	private final MemberService memberService;
 	private final AccountRepository accountRepository;
 
-	public List<AccountResponseDto> getAccounts(CustomUserDetails principal) {
-		Member member = memberService.getById(principal.getId());
+	public List<AccountResponseDto> getAccounts(Long memberId) {
+		Member member = memberService.getById(memberId);
 		List<Account> accounts = member.getAccounts();
 
 		return accounts.stream().map(AccountResponseDto::of).toList();
 	}
 
 	@Transactional
-	public void addAccount(AddAccountRequestDto accountRequestDto, CustomUserDetails principal) {
-		Member member = memberService.getById(principal.getId());
+	public void addAccount(AddAccountRequestDto accountRequestDto, Long memberId) {
+		Member member = memberService.getById(memberId);
 
 		if(member.getAccounts().size() >= 3) {
 			throw new IllegalArgumentException("계좌는 3개까지 등록 가능합니다.");
@@ -49,8 +48,8 @@ public class AccountService {
 	}
 
 	@Transactional
-	public void deleteAccount(CustomUserDetails principal, String uuid) {
-		Member member = memberService.getById(principal.getId());
+	public void deleteAccount(Long memberId, String uuid) {
+		Member member = memberService.getById(memberId);
 
 		Account account = getByUuid(uuid);
 		if(!member.getAccounts().contains(account)) {

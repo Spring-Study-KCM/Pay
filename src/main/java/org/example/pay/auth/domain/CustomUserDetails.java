@@ -35,7 +35,7 @@ public class CustomUserDetails implements UserDetails {
 		return email;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 }
