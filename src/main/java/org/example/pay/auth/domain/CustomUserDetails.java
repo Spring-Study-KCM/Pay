@@ -8,10 +8,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class CustomUserDetails implements UserDetails {
-	private Long id;
-	private String email;
-	private String password;
-	private Role role;
+	private final Long id;
+	private final String email;
+	private final String password;
+	private final Role role;
 
 	public CustomUserDetails(Long id, String email, String password, Role role) {
 		this.id = id;
@@ -22,7 +22,7 @@ public class CustomUserDetails implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(() -> role.name());
+		return List.of(role::name);
 	}
 
 	@Override
