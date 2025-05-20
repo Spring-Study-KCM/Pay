@@ -33,6 +33,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 		body.put("error", exception.getMessage());
 
 		response.getWriter().write(objectMapper.writeValueAsString(body));
-
+		response.getWriter().flush();
+		response.getWriter().close();
 	}
 }
