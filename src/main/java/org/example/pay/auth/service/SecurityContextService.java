@@ -1,11 +1,9 @@
 package org.example.pay.auth.service;
 
-import java.util.Collections;
-
+import org.example.pay.auth.domain.CustomUserDetails;
 import org.example.pay.member.domain.Member;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -18,9 +16,15 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class SecurityContextService {
 	public void saveSecurityContext(HttpSession session, Member member) {
-		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(member.getRole().name());
+		CustomUserDetails userDetails = new CustomUserDetails(
+			member.getId(), member.getEmail(), member.getPassword(), member.getRole()
+		);
 
-		Authentication authentication = new UsernamePasswordAuthenticationToken(member, null, Collections.singleton(authority));
+		Authentication authentication = new UsernamePasswordAuthenticationToken(
+			userDetails,
+			null,
+			userDetails.getAuthorities()
+		);
 
 		SecurityContext context = SecurityContextHolder.createEmptyContext();
 		context.setAuthentication(authentication);
