@@ -35,7 +35,7 @@ public class AccountController {
 	@PostMapping
 	public ResponseEntity<Object> addAccounts(@RequestBody AddAccountRequestDto accountRequestDto,
 		@AuthenticationPrincipal CustomUserDetails principal) {
-		accountService.addAccount(accountRequestDto, principal);
+		accountService.addAccount(accountRequestDto, principal.getId());
 		return ResponseEntity.ok().build();
 	}
 
@@ -44,7 +44,7 @@ public class AccountController {
 		security = {@SecurityRequirement(name = "session")})
 	@GetMapping
 	public ResponseEntity<List<AccountResponseDto>> getAccounts(@AuthenticationPrincipal CustomUserDetails principal) {
-		List<AccountResponseDto> response = accountService.getAccounts(principal);
+		List<AccountResponseDto> response = accountService.getAccounts(principal.getId());
 		return ResponseEntity.ok(response);
 	}
 
@@ -54,7 +54,7 @@ public class AccountController {
 	@DeleteMapping("/{uuid}")
 	public ResponseEntity<Object> deleteAccounts(@PathVariable String uuid,
 		@AuthenticationPrincipal CustomUserDetails principal) {
-		accountService.deleteAccount(principal, uuid);
+		accountService.deleteAccount(principal.getId(), uuid);
 		return ResponseEntity.ok().build();
 	}
 }
