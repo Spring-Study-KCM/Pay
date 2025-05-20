@@ -1,5 +1,7 @@
 package org.example.pay.account.domain;
 
+import java.util.UUID;
+
 import org.example.pay.account.constants.BankCode;
 import org.example.pay.common.entity.BaseEntity;
 import org.example.pay.member.domain.Member;
@@ -26,6 +28,8 @@ public class Account extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	private String uuid;
+
 	@Enumerated(EnumType.STRING)
 	private BankCode bankCode;
 
@@ -41,6 +45,7 @@ public class Account extends BaseEntity {
 
 	@Builder
 	public Account(BankCode bankCode, String accountNumber, String name, boolean isDefault) {
+		this.uuid = UUID.randomUUID().toString();
 		this.bankCode = bankCode;
 		this.accountNumber = accountNumber;
 		this.name = name;

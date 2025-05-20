@@ -51,10 +51,10 @@ public class AccountController {
 	@Operation(summary = "계좌 삭제 API",
 		description = "계좌 삭제",
 		security = {@SecurityRequirement(name = "session")})
-	@DeleteMapping("/{accountId}")
-	public ResponseEntity<Object> deleteAccounts(@PathVariable Long accountId,
+	@DeleteMapping("/{uuid}")
+	public ResponseEntity<Object> deleteAccounts(@PathVariable String uuid,
 		@AuthenticationPrincipal CustomUserDetails principal) {
-		accountService.deleteAccount(principal, accountId);
+		accountService.deleteAccount(principal, uuid);
 		return ResponseEntity.ok().build();
 	}
 }
