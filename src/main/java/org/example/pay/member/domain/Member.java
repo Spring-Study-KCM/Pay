@@ -59,4 +59,8 @@ public class Member extends BaseEntity {
 		this.password = password;
 		this.role = role;
 	}
+
+	public void setWallet(Wallet wallet) {
+		this.wallet = wallet;
+	}
 }

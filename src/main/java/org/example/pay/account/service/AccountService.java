@@ -64,4 +64,10 @@ public class AccountService {
 			() -> new RuntimeException("계좌 정보가 없습니다.")
 		);
 	}
+
+	public Account getById(Long accountId) {
+		return accountRepository.findById(accountId).orElseThrow(
+			() -> new RuntimeException("계좌 정보가 없습니다.")
+		);
+	}
 }
