@@ -1,33 +1,41 @@
 package org.example.pay.auth.domain;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
-import org.example.pay.member.domain.Member;
+import org.example.pay.member.constants.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class CustomUserDetails implements UserDetails {
-	private Member member;
+	private Long id;
+	private String email;
+	private String password;
+	private Role role;
 
-	public CustomUserDetails(Member member) {
-		this.member = member;
+	public CustomUserDetails(Long id, String email, String password, Role role) {
+		this.id = id;
+		this.email = email;
+		this.password = password;
+		this.role = role;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Collection<GrantedAuthority> collection = new ArrayList<>();
-		collection.add((GrantedAuthority)() -> String.valueOf(member.getRole()));
-		return collection;
+		return List.of(() -> role.name());
 	}
 
 	@Override
 	public String getPassword() {
-		return member.getPassword();
+		return password;
 	}
 
 	@Override
 	public String getUsername() {
-		return member.getEmail();
+		return email;
+	}
+
+	public Long getId() {
+		return id;
 	}
 }
