@@ -49,10 +49,10 @@ public class AccountService {
 	}
 
 	@Transactional
-	public void deleteAccount(CustomUserDetails principal, Long accountId) {
+	public void deleteAccount(CustomUserDetails principal, String uuid) {
 		Member member = memberService.getById(principal.getId());
 
-		Account account = getById(accountId);
+		Account account = getByUuid(uuid);
 		if(!member.getAccounts().contains(account)) {
 			throw new IllegalArgumentException("등록된 계좌가 아닙니다");
 		}
@@ -60,8 +60,8 @@ public class AccountService {
 		accountRepository.delete(account);
 	}
 
-	public Account getById(Long accountId) {
-		return accountRepository.findById(accountId).orElseThrow(
+	public Account getByUuid(String uuid) {
+		return accountRepository.findByUuid(uuid).orElseThrow(
 			() -> new RuntimeException("계좌 정보가 없습니다.")
 		);
 	}
