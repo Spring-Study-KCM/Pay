@@ -44,7 +44,7 @@ public class WalletController {
 	}
 
 	@PostMapping("/charge")
-	@Operation(summary = "페이머니 충전 조회 API",
+	@Operation(summary = "페이머니 충전 API",
 		description = "페이머니 충전",
 		security = {@SecurityRequirement(name = "session")})
 	public ResponseEntity<Object> chargePayMoney(@RequestBody ChargeRequestDto requestDto, @AuthenticationPrincipal CustomUserDetails principal) {
