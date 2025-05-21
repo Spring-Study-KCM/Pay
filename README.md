@@ -47,4 +47,11 @@
 <img height="500" alt="erd" src="https://github.com/user-attachments/assets/22e08596-706e-4b2f-a89e-a47bb2d4626e" />
 
 ## 💻 2주차 결과물
-![스크린샷 2025-05-15 13.09.15.png](..%2F..%2F..%2F..%2F..%2Fvar%2Ffolders%2F2l%2F5psj0p692w30jhz8mq14qkfh0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_qE61qv%2F%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-15%2013.09.15.png)
+<img width="838" alt="스크린샷 2025-05-21 13 37 02" src="https://github.com/user-attachments/assets/fbe313af-bf30-4942-b61b-3003ee7340fb" />
+
+
+## 💻 3주차 결과물
+<img width="838" alt="스크린샷 2025-05-21 13 36 15" src="https://github.com/user-attachments/assets/06702d7a-12c6-4f71-bdf1-35fcaa11cd38" />
+<img width="838" alt="스크린샷 2025-05-21 13 36 30" src="https://github.com/user-attachments/assets/57244629-feea-4d40-a5ae-ba09d8177cdc" />
+
+
