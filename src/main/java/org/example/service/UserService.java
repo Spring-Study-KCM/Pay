@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final WalletService walletService;
 
     public User register(UserDto dto) {
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
@@ -22,7 +23,10 @@ public class UserService {
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        walletService.createWallet(savedUser);
+
+        return savedUser;
     }
 
     public User getUserByEmail(String email) {
