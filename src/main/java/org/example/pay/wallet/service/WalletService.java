@@ -34,14 +34,14 @@ public class WalletService {
 	}
 
 	public WalletResponseDto getWallet(Long memberId) {
-		Member member = memberService.getById(memberId);
+		Member member = memberService.getByMemberWithWallet(memberId);
 		Wallet wallet = member.getWallet();
 		return WalletResponseDto.of(wallet);
 	}
 
 	@Transactional
 	public void chargePayMoney(ChargeRequestDto requestDto, Long memberId) {
-		Member member = memberService.getById(memberId);
+		Member member = memberService.getByMemberWithWalletAndAccounts(memberId);
 		Wallet wallet = member.getWallet();
 		Account account = accountService.getById(requestDto.accountId());
 

@@ -25,4 +25,16 @@ public class MemberService {
 			() -> new RuntimeException("이메일에 맞는 멤버가 존재하지 않습니다.")
 		);
 	}
+
+	public Member getByMemberWithWallet(Long memberId) {
+		return memberRepository.findByIdWithWallet(memberId).orElseThrow(
+			() -> new RuntimeException("아이디에 맞는 멤버가 존재하지 않습니다.")
+		);
+	}
+
+	public Member getByMemberWithWalletAndAccounts(Long memberId) {
+		return memberRepository.findByIdWithWalletAndAccounts(memberId).orElseThrow(
+			() -> new RuntimeException("아이디에 맞는 멤버가 존재하지 않습니다.")
+		);
+	}
 }
