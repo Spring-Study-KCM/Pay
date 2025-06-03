@@ -12,7 +12,7 @@ public class WalletService {
     private final WalletRepository walletRepository;
 
     public Wallet getWalletByUser(User user) {
-        return walletRepository.findByUserId(user.getId())
+        return walletRepository.findByUserIdFetchJoin(user.getId())
                 .orElseThrow(() -> new IllegalArgumentException("지갑이 존재하지 않습니다."));
     }
 

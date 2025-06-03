@@ -26,7 +26,7 @@ public class RealAccountService {
     }
 
     public List<RealAccountResponse> getMyAccounts(User user) {
-        return realAccountRepository.findAllByUserId(user.getId()).stream()
+        return realAccountRepository.findAllByUserIdFetchJoin(user.getId()).stream()
                 .map(a -> new RealAccountResponse(a.getId(), a.getBankName(), a.getAccountNumber(), a.getCreatedAt()))
                 .toList();
     }
