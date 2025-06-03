@@ -9,6 +9,7 @@ import org.example.dto.AuthRequest;
 import org.example.dto.UserDto;
 import org.example.entity.User;
 import org.example.entity.UserResponseDto;
+import org.example.security.CustomUserPrincipal;
 import org.example.security.JwtProvider;
 import org.example.service.MailService;
 import org.example.service.UserService;
@@ -39,13 +40,19 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest request) {
-        // AuthenticationManager로 인증 수행
+        // 1. 인증 수행
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-        // 인증 성공 -> 토큰 발급
-        String token = jwtProvider.generateToken(request.getEmail());
+        // 2. Principal에서 CustomUserPrincipal 가져오기
+        CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
+        User user = principal.getUser();
+
+        // 3. user 정보를 사용하여 토큰 생성 (id, email, role 포함)
+        String token = jwtProvider.generateToken(user.getId(), user.getEmail());
+
+        // 4. 토큰 응답
         return ResponseEntity.ok(Collections.singletonMap("token", token));
     }
 
@@ -73,10 +80,12 @@ public class UserController {
         return ResponseEntity.ok("인증 메일이 전송되었습니다.");
     }
 
+
     @GetMapping
     public ResponseEntity<?> getMyInfo(Authentication authentication) {
-        String email = authentication.getName();
-        User user = userService.getUserByEmail(email);
+        // Authentication에서 User 직접 추출
+        CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
+        User user = principal.getUser();
 
         UserResponseDto responseDto = new UserResponseDto(user.getId(), user.getEmail());
         return ResponseEntity.ok(responseDto);

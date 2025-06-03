@@ -28,9 +28,4 @@ public class UserService {
 
         return savedUser;
     }
-
-    public User getUserByEmail(String email) {
-        System.out.println("🔍 getUserByEmail 호출됨: " + email);
-        return userRepository.findByEmailFetchJoin(email).orElseThrow(() -> new UsernameNotFoundException("사용자 없음"));
-    }
 }

@@ -41,4 +41,16 @@ public class RealAccountService {
 
         realAccountRepository.delete(account);
     }
+
+    // 특정 계좌 조회 시 권한 검증 포함
+    public RealAccount getAccountWithPermissionCheck(User user, Long accountId) {
+        RealAccount account = realAccountRepository.findById(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 계좌가 존재하지 않습니다."));
+
+        if (!account.getUser().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("계좌 접근 권한이 없습니다.");
+        }
+
+        return account;
+    }
 }

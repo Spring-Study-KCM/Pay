@@ -25,11 +25,20 @@ public class ChargeService {
 
     @Transactional
     public void chargeWallet(User user, ChargeRequest request) {
-        Wallet wallet = walletRepository.findByUserIdFetchJoin(user.getId())
-                .orElseThrow(() -> new IllegalArgumentException("지갑이 없습니다."));
+        // User 객체에서 Wallet 직접 사용 (가능한 경우)
+        Wallet wallet = user.getWallet();
+        if (wallet == null) {
+            wallet = walletRepository.findByUserIdFetchJoin(user.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("지갑이 없습니다."));
+        }
 
         RealAccount account = realAccountRepository.findById(request.getRealAccountId())
                 .orElseThrow(() -> new IllegalArgumentException("계좌가 없습니다."));
+
+        // 계좌 소유자 검증
+        if (!account.getUser().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("계좌 소유자가 일치하지 않습니다.");
+        }
 
         wallet.setBalance(wallet.getBalance() + request.getAmount());
 
@@ -45,8 +54,11 @@ public class ChargeService {
 
     @Transactional(readOnly = true)
     public List<ChargeResponse> getChargeHistory(User user, LocalDate from, LocalDate to) {
-        Wallet wallet = walletRepository.findByUserIdFetchJoin(user.getId())
-                .orElseThrow(() -> new IllegalArgumentException("지갑이 없습니다."));
+        Wallet wallet = user.getWallet();
+        if (wallet == null) {
+            wallet = walletRepository.findByUserIdFetchJoin(user.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("지갑이 없습니다."));
+        }
 
         List<Charge> charges = (from != null && to != null)
                 ? chargeRepository.findByWalletIdAndChargedAtBetweenWithFetch(

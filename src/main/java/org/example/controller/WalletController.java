@@ -3,6 +3,7 @@ package org.example.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.entity.User;
 import org.example.entity.Wallet;
+import org.example.security.CustomUserPrincipal;
 import org.example.service.UserService;
 import org.example.service.WalletService;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class WalletController {
     private final WalletService walletService;
-    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<?> getMyWallet(Authentication authentication) {
-        String email = authentication.getName();
-        User user = userService.getUserByEmail(email);
-        Wallet wallet = walletService.getWalletByUser(user);
+        // Authentication에서 User 직접 추출
+        CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
+        User user = principal.getUser();
 
+        Wallet wallet = walletService.getWalletByUser(user);
         return ResponseEntity.ok(new WalletResponse(wallet.getBalance(), wallet.getCreatedAt()));
     }
 

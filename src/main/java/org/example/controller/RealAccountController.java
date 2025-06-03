@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.RealAccountRequest;
 import org.example.dto.RealAccountResponse;
 import org.example.entity.User;
+import org.example.security.CustomUserPrincipal;
 import org.example.service.RealAccountService;
 import org.example.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -18,24 +19,29 @@ import java.util.List;
 public class RealAccountController {
 
     private final RealAccountService realAccountService;
-    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<?> register(@RequestBody RealAccountRequest request, Authentication authentication) {
-        User user = userService.getUserByEmail(authentication.getName());
+        CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
+        User user = principal.getUser();
+
         realAccountService.registerAccount(user, request);
         return ResponseEntity.ok("계좌 등록 완료");
     }
 
     @GetMapping
     public ResponseEntity<List<RealAccountResponse>> getMyAccounts(Authentication authentication) {
-        User user = userService.getUserByEmail(authentication.getName());
+        CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
+        User user = principal.getUser();
+
         return ResponseEntity.ok(realAccountService.getMyAccounts(user));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAccount(@PathVariable Long id, Authentication authentication) {
-        User user = userService.getUserByEmail(authentication.getName());
+        CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
+        User user = principal.getUser();
+
         realAccountService.deleteAccount(user, id);
         return ResponseEntity.ok("계좌 삭제 완료");
     }

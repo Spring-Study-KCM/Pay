@@ -20,17 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmailFetchJoin(email)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자 없음"));
 
-        // User → UserDetails 변환
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                Collections.emptyList()  // 권한이 없을 경우
-        );
+        // CustomUserPrincipal 사용 (User 객체 포함)
+        return new CustomUserPrincipal(user);
     }
-//    @Override
-//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//        User user = userRepository.findByEmailFetchJoin(email)
-//                .orElseThrow(() -> new UsernameNotFoundException("사용자 없음"));
-//        return new CustomUserPrincipal(user); // 👈 User 대신 CustomUserPrincipal 사용
-//    }
 }
