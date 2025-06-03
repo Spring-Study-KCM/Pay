@@ -12,7 +12,13 @@ public class WalletService {
     private final WalletRepository walletRepository;
 
     public Wallet getWalletByUser(User user) {
-        return walletRepository.findByUserId(user.getId())
+        // User 객체에 Wallet이 이미 로드되어 있는지 확인
+        if (user.getWallet() != null) {
+            return user.getWallet();
+        }
+
+        // 없으면 DB에서 조회
+        return walletRepository.findByUserIdFetchJoin(user.getId())
                 .orElseThrow(() -> new IllegalArgumentException("지갑이 존재하지 않습니다."));
     }
 

@@ -16,7 +16,7 @@ public class UserService {
     private final WalletService walletService;
 
     public User register(UserDto dto) {
-        if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
+        if (userRepository.findByEmailFetchJoin(dto.getEmail()).isPresent()) {
             throw new IllegalArgumentException("이미 등록된 이메일입니다.");
         }
         User user = new User();
@@ -27,9 +27,5 @@ public class UserService {
         walletService.createWallet(savedUser);
 
         return savedUser;
-    }
-
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("사용자 없음"));
     }
 }

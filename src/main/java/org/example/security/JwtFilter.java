@@ -20,19 +20,34 @@ public class JwtFilter extends OncePerRequestFilter {
     private final CustomUserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain)
             throws ServletException, IOException {
+
         String token = resolveToken(request);
+
         if (token != null && jwtProvider.validateToken(token)) {
             String email = jwtProvider.getEmail(token);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+            // 사용자 정보 로드
+            CustomUserPrincipal userPrincipal = (CustomUserPrincipal) userDetailsService.loadUserByUsername(email);
+
+            // 인증 객체 생성
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities());
+                    userPrincipal,
+                    null,
+                    userPrincipal.getAuthorities()
+            );
+
+            // 보안 컨텍스트에 설정
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
+
         filterChain.doFilter(request, response);
     }
 
+    // Authorization 헤더에서 토큰 추출
     private String resolveToken(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");
         if (bearer != null && bearer.startsWith("Bearer ")) {
