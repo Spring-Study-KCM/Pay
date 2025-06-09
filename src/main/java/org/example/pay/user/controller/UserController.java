@@ -48,9 +48,12 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "친구를 추가했습니다."),
     })
-    @PostMapping("/add")
-    public ResponseEntity<Object> addFriend(@RequestBody AddFriendRequest addFriendRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+    @PostMapping()
+    public ResponseEntity<Void> addFriend(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @RequestBody AddFriendRequest addFriendRequest) {
+        userService.addFriend(customUserDetails.getId(), addFriendRequest);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
     @Operation(summary = "친구 삭제 API")
