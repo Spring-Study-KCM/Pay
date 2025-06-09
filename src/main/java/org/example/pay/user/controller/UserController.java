@@ -60,8 +60,11 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "친구를 삭제했습니다."),
     })
-    @DeleteMapping("/add")
-    public ResponseEntity<Object> deleteFriend(@RequestBody DeleteFriendRequest deleteFriendRequest) {
+    @DeleteMapping()
+    public ResponseEntity<Object> deleteFriend(
+        @AuthenticationPrincipal CustomUserDetails customUserDetails,
+        @RequestBody DeleteFriendRequest deleteFriendRequest) {
+        userService.deleteFriend(deleteFriendRequest);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 }

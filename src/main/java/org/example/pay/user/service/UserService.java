@@ -5,10 +5,12 @@ import java.util.List;
 import org.example.pay.global.dto.CursorPage;
 import org.example.pay.global.dto.CursorPageRequest;
 import org.example.pay.global.exception.PayException;
+import org.example.pay.global.exception.code.FriendErrorCode;
 import org.example.pay.global.exception.code.UserErrorCode;
 import org.example.pay.user.domain.Friend;
 import org.example.pay.user.domain.User;
 import org.example.pay.user.dto.request.AddFriendRequest;
+import org.example.pay.user.dto.request.DeleteFriendRequest;
 import org.example.pay.user.dto.response.FriendInfoListResponse;
 import org.example.pay.user.dto.response.FriendInfoResponse;
 import org.example.pay.user.repository.FriendRepository;
@@ -55,5 +57,13 @@ public class UserService {
 
 		friendRepository.save(myFriend);
 		friendRepository.save(yourFriend);
+	}
+
+	@Transactional
+	public void deleteFriend(DeleteFriendRequest deleteFriendRequest) {
+		if (!friendRepository.existsById(deleteFriendRequest.friendId())) {
+			throw new PayException(FriendErrorCode.FRIEND_NOT_FOUND);
+		}
+		friendRepository.deleteById(deleteFriendRequest.friendId());
 	}
 }
