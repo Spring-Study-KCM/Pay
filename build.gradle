@@ -4,6 +4,9 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
+ext {
+    queryDslVersion = "5.1.0"
+}
 group = 'org.example'
 version = '0.0.1-SNAPSHOT'
 
@@ -57,8 +60,24 @@ dependencies {
 
     // Session
     implementation 'org.springframework.session:spring-session-data-redis'
+
+    // QueryDSL
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
+    annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api:3.1.0"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api:2.1.1"
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+def querydslDir = layout.buildDirectory.dir("generated/querydsl").get().asFile
+
+sourceSets {
+    main.java.srcDirs += [querydslDir]
+}
+
+clean.doLast {
+    file(querydslDir).deleteDir()
 }
