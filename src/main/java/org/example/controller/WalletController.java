@@ -19,7 +19,7 @@ public class WalletController {
     private final WalletService walletService;
 
     @GetMapping
-    public ResponseEntity<?> getMyWallet(Authentication authentication) {
+    public ResponseEntity<WalletResponse> getMyWallet(Authentication authentication) {
         // Authentication에서 User 직접 추출
         CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
         User user = principal.getUser();

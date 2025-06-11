@@ -22,7 +22,7 @@ public class ChargeController {
     private final ChargeService chargeService;
 
     @PostMapping
-    public ResponseEntity<?> charge(@RequestBody ChargeRequest request, Authentication authentication) {
+    public ResponseEntity<String> charge(@RequestBody ChargeRequest request, Authentication authentication) {
         CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
         User user = principal.getUser();
 

@@ -22,6 +22,7 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,13 +34,13 @@ public class UserController {
     private final MailService mailService;
 
     @PostMapping
-    public ResponseEntity<?> register(@RequestBody @Valid UserDto userDto) {
+    public ResponseEntity<String> register(@RequestBody @Valid UserDto userDto) {
         userService.register(userDto);
         return ResponseEntity.ok("회원가입 완료");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthRequest request) {
+    public ResponseEntity<Map<String, String>> login(@RequestBody AuthRequest request) {
         // 1. 인증 수행
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
@@ -57,7 +58,7 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(HttpServletRequest request) {
+    public ResponseEntity<String> logout(HttpServletRequest request) {
         // JWT 기반 로그아웃은 일반적으로 서버가 상태를 갖지 않음
         // → 클라이언트가 토큰을 지우면 로그아웃 처리 완료
         // → 보안을 강화하고 싶다면 블랙리스트를 도입
@@ -75,14 +76,14 @@ public class UserController {
 
 
     @PostMapping("/send-verification")
-    public ResponseEntity<?> sendVerificationEmail(@RequestParam String email) {
+    public ResponseEntity<String> sendVerificationEmail(@RequestParam String email) {
         mailService.sendVerificationMail(email);
         return ResponseEntity.ok("인증 메일이 전송되었습니다.");
     }
 
 
     @GetMapping
-    public ResponseEntity<?> getMyInfo(Authentication authentication) {
+    public ResponseEntity<UserResponseDto> getMyInfo(Authentication authentication) {
         // Authentication에서 User 직접 추출
         CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
         User user = principal.getUser();
