@@ -21,7 +21,7 @@ public class RealAccountController {
     private final RealAccountService realAccountService;
 
     @PostMapping
-    public ResponseEntity<?> register(@RequestBody RealAccountRequest request, Authentication authentication) {
+    public ResponseEntity<String> register(@RequestBody RealAccountRequest request, Authentication authentication) {
         CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
         User user = principal.getUser();
 
@@ -38,7 +38,7 @@ public class RealAccountController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAccount(@PathVariable Long id, Authentication authentication) {
+    public ResponseEntity<String> deleteAccount(@PathVariable Long id, Authentication authentication) {
         CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
         User user = principal.getUser();
 
