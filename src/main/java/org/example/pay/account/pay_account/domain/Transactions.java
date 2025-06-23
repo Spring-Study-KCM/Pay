@@ -50,4 +50,8 @@ public class Transactions {
 		this.payAccount = payAccount;
 		this.payType = payType;
 	}
+
+	public void updateSuccess() {
+		this.isSuccess = true;
+	}
 }
