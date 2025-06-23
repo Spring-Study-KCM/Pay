@@ -10,8 +10,10 @@ import org.example.pay.account.pay_account.dto.request.ReloadAccountRequest;
 import org.example.pay.account.pay_account.dto.request.RemitRequest;
 import org.example.pay.account.service.AccountService;
 import org.example.pay.global.dto.ResponseDto;
+import org.example.pay.global.service.CustomUserDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,10 +41,13 @@ public class PayAccountController {
 
     @Operation(summary = "페이 송금 API")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "송금을 완료했습니다."),
+        @ApiResponse(responseCode = "200", description = "송금을 완료했습니다."),
     })
     @PostMapping("/remit")
-    public ResponseEntity<Object> remit(@RequestBody final RemitRequest remitRequest) {
+    public ResponseEntity<Object> remit(@RequestBody final RemitRequest remitRequest, @AuthenticationPrincipal
+    CustomUserDetails userDetails) {
+
+        accountService.remit(remitRequest.friendId(), remitRequest.amount(), userDetails.getId());
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 

@@ -41,4 +41,8 @@ public class PayAccount {
     public void deposit(Long amount) {
         this.balance += amount;
     }
+
+    public void withdraw(Long amount) {
+        this.balance -= amount;
+    }
 }

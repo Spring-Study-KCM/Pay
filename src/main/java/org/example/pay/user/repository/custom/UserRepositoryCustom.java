@@ -15,4 +15,9 @@ public interface UserRepositoryCustom {
 	Long getTotalFriendCounts(
 		Long userId
 	);
+
+	boolean isFriend(
+		Long userId,
+		Long friendId
+	);
 }
