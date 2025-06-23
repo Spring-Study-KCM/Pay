@@ -8,10 +8,10 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum MailErrorCode implements DefaultErrorCode{
 
-    //400 BAD_REQUEST
+    //400
     MISSING_EMAIL(HttpStatus.BAD_REQUEST, "이메일 주소가 누락되었습니다."),
 
-    //500 INTERNAL_SERVER_ERROR
+    //500
     EMAIL_SENDING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "이메일 발송에 실패했습니다."),
     ;
 
