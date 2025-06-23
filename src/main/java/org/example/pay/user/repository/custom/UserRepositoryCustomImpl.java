@@ -56,4 +56,20 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom{
 			)
 			.fetchOne();
 	}
+
+	@Override
+	public boolean isFriend(Long userId, Long friendId) {
+		QFriend friend = QFriend.friend;
+
+		Integer count = queryFactory
+			.selectOne()
+			.from(friend)
+			.where(
+				friend.user.id.eq(userId)
+					.and(friend.friendUser.id.eq(friendId))
+			)
+			.fetchFirst();
+
+		return count != null;
+	}
 }
