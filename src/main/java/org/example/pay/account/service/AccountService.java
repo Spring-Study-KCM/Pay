@@ -8,8 +8,12 @@ import org.example.pay.account.bank_account.service.BankAccountService;
 import org.example.pay.account.pay_account.domain.PayAccount;
 import org.example.pay.account.pay_account.domain.Transactions;
 import org.example.pay.account.pay_account.dto.response.PayType;
+import org.example.pay.account.pay_account.dto.response.TransactionsInfoListResponse;
+import org.example.pay.account.pay_account.dto.response.TransactionsInfoResponse;
 import org.example.pay.account.pay_account.repository.TransactionsRepository;
 import org.example.pay.account.pay_account.service.PayAccountService;
+import org.example.pay.global.dto.CursorPage;
+import org.example.pay.global.dto.CursorPageRequest;
 import org.example.pay.global.exception.PayException;
 import org.example.pay.global.exception.code.FriendErrorCode;
 import org.example.pay.global.exception.code.PayAccountErrorCode;
@@ -86,7 +90,7 @@ public class AccountService {
 		transactionsRepository.save(myTransactions);
 	}
 
-    @Transactional
+	@Transactional
 	public void deposit(Long transactionsId, Long friendId, Long amount, Long userId) {
 
 		boolean isFriend = userRepository.isFriend(userId, friendId);
@@ -99,12 +103,12 @@ public class AccountService {
 
 		myPayAccount.deposit(amount);
 
-        Transactions friendTransactions = transactionsRepository.findById(transactionsId)
-            .orElseThrow(() -> new PayException(TransactionsErrorCode.NOT_FOUND_TRANSACTIONS));
+		Transactions friendTransactions = transactionsRepository.findById(transactionsId)
+			.orElseThrow(() -> new PayException(TransactionsErrorCode.NOT_FOUND_TRANSACTIONS));
 
-        friendTransactions.updateSuccess();
+		friendTransactions.updateSuccess();
 
-        Transactions myTransactions = Transactions.builder()
+		Transactions myTransactions = Transactions.builder()
 			.payAccount(myPayAccount)
 			.payType(PayType.DEPOSIT)
 			.amount(amount)
@@ -112,5 +116,22 @@ public class AccountService {
 			.build();
 
 		transactionsRepository.save(myTransactions);
+	}
+
+	public TransactionsInfoListResponse getTransactionsList(CursorPageRequest request, Long payAccountId,
+		PayType payType) {
+		if (payType == null) {
+			payType = PayType.ALL;
+		}
+
+		List<TransactionsInfoResponse> transactionsInfo = transactionsRepository.getTransactionsList(payAccountId,
+			payType, request);
+		CursorPage<TransactionsInfoResponse> transactionsInfoResponseCursorPage = CursorPage.of(transactionsInfo,
+			request.size(),
+			TransactionsInfoResponse::transactionsId);
+
+		int totalCount = transactionsRepository.getTotalTransactionsList(payAccountId, payType).intValue();
+
+		return TransactionsInfoListResponse.of(totalCount, transactionsInfoResponseCursorPage);
 	}
 }

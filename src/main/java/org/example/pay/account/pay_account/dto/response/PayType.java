@@ -5,5 +5,6 @@ import lombok.Getter;
 @Getter
 public enum PayType {
 	DEPOSIT,
-	WITHDRAW
+	WITHDRAW,
+	ALL
 }
