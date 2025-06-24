@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.example.pay.account.domain.Account;
 import org.example.pay.common.entity.BaseEntity;
+import org.example.pay.friend.domain.Friend;
 import org.example.pay.member.constants.Role;
 import org.example.pay.wallet.domain.Wallet;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -51,6 +53,9 @@ public class Member extends BaseEntity {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "wallet_id")
 	private Wallet wallet;
+
+	@OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Friend> friend = new  ArrayList<>();
 
 	@Builder
 	public Member(String email, String name, String password, Role role) {
