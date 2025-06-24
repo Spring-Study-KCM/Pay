@@ -33,7 +33,7 @@
 | 1주차 | ✅ DB 설계 (ERD) <br> ✅ API 명세서 작성 <br> ✅ 프로젝트 초기 세팅 (Init) |
 | 2주차 | ✅ 인증 인가 관련 API                                           |
 | 3주차 | ✅ 계좌, 페이머니 관련 API                                        |
-| 4주차 |                                                          |
+| 4주차 | ✅ 친구 관련 API                                              |
 | 5주차 |                                                          |
 
 ---
@@ -54,4 +54,4 @@
 <img width="838" alt="스크린샷 2025-05-21 13 36 15" src="https://github.com/user-attachments/assets/06702d7a-12c6-4f71-bdf1-35fcaa11cd38" />
 <img width="838" alt="스크린샷 2025-05-21 13 36 30" src="https://github.com/user-attachments/assets/57244629-feea-4d40-a5ae-ba09d8177cdc" />
 
-
+## 💻 4주차 결과물
