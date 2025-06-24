@@ -1,0 +1,82 @@
+package org.example.domain.charge.service;
+
+import lombok.RequiredArgsConstructor;
+import org.example.domain.charge.dto.ChargeRequest;
+import org.example.domain.charge.dto.ChargeResponse;
+import org.example.domain.charge.entity.Charge;
+import org.example.domain.account.entity.RealAccount;
+import org.example.domain.user.entity.User;
+import org.example.domain.wallet.entity.Wallet;
+import org.example.domain.charge.repository.ChargeRepository;
+import org.example.domain.account.repository.RealAccountRepository;
+import org.example.domain.wallet.repository.WalletRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class ChargeService {
+    private final ChargeRepository chargeRepository;
+    private final RealAccountRepository realAccountRepository;
+    private final WalletRepository walletRepository;
+
+    @Transactional
+    public void chargeWallet(User user, ChargeRequest request) {
+        // User 객체에서 Wallet 직접 사용 (가능한 경우)
+        Wallet wallet = user.getWallet();
+        if (wallet == null) {
+            wallet = walletRepository.findByUserIdFetchJoin(user.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("지갑이 없습니다."));
+        }
+
+        RealAccount account = realAccountRepository.findById(request.getRealAccountId())
+                .orElseThrow(() -> new IllegalArgumentException("계좌가 없습니다."));
+
+        // 계좌 소유자 검증
+        if (!account.getUser().getId().equals(user.getId())) {
+            throw new IllegalArgumentException("계좌 소유자가 일치하지 않습니다.");
+        }
+
+        wallet.setBalance(wallet.getBalance() + request.getAmount());
+
+        Charge charge = Charge.builder()
+                .wallet(wallet)
+                .realAccount(account)
+                .amount(request.getAmount())
+                .description(request.getDescription())
+                .build();
+
+        chargeRepository.save(charge);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ChargeResponse> getChargeHistory(User user, LocalDate from, LocalDate to) {
+        Wallet wallet = user.getWallet();
+        if (wallet == null) {
+            wallet = walletRepository.findByUserIdFetchJoin(user.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("지갑이 없습니다."));
+        }
+
+        List<Charge> charges = (from != null && to != null)
+                ? chargeRepository.findByWalletIdAndChargedAtBetweenWithFetch(
+                wallet.getId(),
+                from.atStartOfDay(),
+                to.atTime(23, 59, 59))
+                : chargeRepository.findByWalletIdWithFetch(wallet.getId());
+
+        return charges.stream()
+                .map(c -> new ChargeResponse(
+                        c.getId(),
+                        c.getAmount(),
+                        c.getDescription(),
+                        c.getChargedAt(),
+                        c.getRealAccount().getBankName(),
+                        c.getRealAccount().getAccountNumber()
+                ))
+                .toList();
+    }
+}
+
